@@ -6,7 +6,7 @@ from utils import *
 
 st.title("Telco Customer Churn Predictions")
 
-st.subheader("BYOP-D2S4G - "Churn_Turn_ Fun")
+st.subheader("BYOP-D2S4G")
 
 with open('model.pkl', 'rb') as f:
     loaded_model = pickle.load(f)

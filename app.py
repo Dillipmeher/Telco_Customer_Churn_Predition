@@ -37,7 +37,7 @@ if st.button("Get Predictions"):
         else:
             test_data_processed = data_preprocessing(test_data)
             test_pred = loaded_model.predict(test_data_processed)
-            test_data["y_pred"] = test_pred
+            test_data["churn_predition"] = test_pred
             st.dataframe(test_data)
             if test_pred is not None:
                 download_link = create_download_link(test_data, filename = 'Predicted Telco Customer Churn.csv', download_filename= "Download predictions")

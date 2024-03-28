@@ -2,6 +2,7 @@ import streamlit as st
 import pickle
 import pandas as pd
 import base64
+from utils import *
 
 st.title("Telco Customer Churn Predictions")
 st.subheader("BYOP for IPBA Batch-17, Group-F")
@@ -10,23 +11,11 @@ with open('model.pkl', 'rb') as f:
     loaded_model = pickle.load(f)
 
 file = st.file_uploader("Please upload the file for prediction", type='csv')
-required_columns = ['tenure', 'MonthlyCharges', 'TotalCharges', 'gender', 'SeniorCitizen',
-       'Partner', 'Dependents', 'PhoneService', 'PaperlessBilling',
-       'MultipleLines_No', 'MultipleLines_No phone service',
-       'MultipleLines_Yes', 'InternetService_DSL',
-       'InternetService_Fiber optic', 'InternetService_No',
-       'OnlineSecurity_No', 'OnlineSecurity_No internet service',
-       'OnlineSecurity_Yes', 'OnlineBackup_No',
-       'OnlineBackup_No internet service', 'OnlineBackup_Yes',
-       'DeviceProtection_No', 'DeviceProtection_No internet service',
-       'DeviceProtection_Yes', 'TechSupport_No',
-       'TechSupport_No internet service', 'TechSupport_Yes', 'StreamingTV_No',
-       'StreamingTV_No internet service', 'StreamingTV_Yes',
-       'StreamingMovies_No', 'StreamingMovies_No internet service',
-       'StreamingMovies_Yes', 'Contract_Month-to-month', 'Contract_One year',
-       'Contract_Two year', 'PaymentMethod_Bank transfer (automatic)',
-       'PaymentMethod_Credit card (automatic)',
-       'PaymentMethod_Electronic check', 'PaymentMethod_Mailed check']
+required_columns = ['customerID', 'gender', 'SeniorCitizen', 'Partner', 'Dependents',
+       'tenure', 'PhoneService', 'MultipleLines', 'InternetService',
+       'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport',
+       'StreamingTV', 'StreamingMovies', 'Contract', 'PaperlessBilling',
+       'PaymentMethod', 'MonthlyCharges', 'TotalCharges']
 
 def create_download_link(df, filename="data_with_predictions.csv", download_filename = "Download CSV File"):
     csv = df.to_csv(index=False)
@@ -46,7 +35,8 @@ if st.button("Get Predictions"):
             download_link = create_download_link(sample_df, filename = "Sample File for Telco Customer Churn.csv", download_filename= "Sample File Download")
             st.markdown(download_link, unsafe_allow_html=True)
         else:
-            test_pred = loaded_model.predict(test_data)
+            test_data_processed = data_preprocessing(test_data)
+            test_pred = loaded_model.predict(test_data_processed)
             test_data["y_pred"] = test_pred
             st.dataframe(test_data)
             if test_pred is not None:

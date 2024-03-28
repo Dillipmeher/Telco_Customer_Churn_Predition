@@ -5,8 +5,8 @@ import base64
 from utils import *
 
 st.title("Telco Customer Churn Predictions")
-st.subheader("Churn..Turn... Fun....")
-st.subheader("BYOP-D2S4G for IPBA Batch-17, Group-F")
+
+st.subheader("BYOP-D2S4G - "Churn..Turn... Fun....")
 
 with open('model.pkl', 'rb') as f:
     loaded_model = pickle.load(f)
